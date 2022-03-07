@@ -23,14 +23,6 @@ const userSchema = new Schema(
       required: true,
       max_length: 50,
     },
-    character: [
-    attacks=[],
-    idles=[],
-    image='',
-    Hp=0,
-    Atk=0,
-    Def=0
-    ],
   },
   {
     toJSON: {

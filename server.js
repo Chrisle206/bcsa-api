@@ -1,5 +1,5 @@
 const express = require('express');
-// const session = require('express-session');
+require('dotenv').config();
 const db = require('./config/connection');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -8,10 +8,9 @@ const routes = require('./routes');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-//TODO: Environment variable for secret
-//TODO: Edit ttl
+//TODO: Replace sessions with JWT
 const sess = {
-  secret: 'Super secret secret',
+  secret: process.env.TOKEN_KEY,
   cookie: {},
   resave: false,
   saveUninitialized: false,
