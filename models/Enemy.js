@@ -16,9 +16,18 @@ const enemySchema = new Schema(
       unique:true
     },
 
+    level: {
+        type: Integer,
+        required: true,
+    },   
+
     attacks: [],
 
+    dialogue: [],
+
     idles: [],
+
+    taunts: [],
 
     image: '',
 
