@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt")
 // const router = express.Router();
 const { User } = require("../models");
 
+
+//TODO: Replace sessions with JWT.
 // Login route
 router.post("/login",(req,res)=>{
     User.findOne({
@@ -26,7 +28,8 @@ router.post("/login",(req,res)=>{
             return res.status(401).json({msg:"Invalid username/password."})
         }
     })
-})
+});
+
 //Sign up route
 router.post("/signup", (req,res) => {
     User.create({
@@ -42,7 +45,7 @@ router.post("/signup", (req,res) => {
     }).catch(err => {
         throw err;
     })
-})
+});
 
 //Logout route
 router.post("/logout", (req,res)=>{
@@ -50,8 +53,10 @@ router.post("/logout", (req,res)=>{
         console.log("Logged out.")    
         res.status(204).end();
     });
-})
+});
 
+
+//TODO: Replace sesions with JWT 
 //Session routes, for development
 router.get("/showsessions", (req, res) => {
     res.json(req.session);
@@ -60,6 +65,11 @@ router.get("/showsessions", (req, res) => {
 router.get("/clearsessions/", (req, res) => {
   req.session.destroy();
   res.json(req.session);
-})
+});
+
+//Shows all users, this is for development only
+router.get("/showall", (req, res) => {
+    User.findAll().then(users => res.json(users))
+});
 
 module.exports = router;
