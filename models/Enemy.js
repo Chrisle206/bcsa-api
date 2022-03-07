@@ -17,8 +17,8 @@ const enemySchema = new Schema(
     },
 
     level: {
-        type: Integer,
-        required: true,
+      type: Number,
+      required: true,
     },   
 
     attacks: [],

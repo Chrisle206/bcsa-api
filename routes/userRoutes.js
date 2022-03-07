@@ -4,20 +4,22 @@ const session = require('express-session');
 const bcrypt = require("bcrypt")
 // const router = express.Router();
 const { User } = require("../models");
+const Character = require('../models/Character');
 
 
 //TODO: Replace sessions with JWT.
 // Login route
-router.post("/login",(req,res)=>{
-    User.findOne({
-        where:{
-            username:req.body.username
-        }
-    }).then(foundUser=>{
+router.post("/login", async (req,res)=>{
+    // console.log(req.body);
+    User.findOne({username:req.body.username})
+    .then(foundUser=>{
+        console.log(foundUser);
         if(!foundUser){
-            return res.status(401).json({msg:"Invalid username/password"})
+            return res.status(401).json({msg:"Invalid username/password type 1"})
         }
         if(bcrypt.compareSync(req.body.password,foundUser.password)){
+            console.log(`Request password: ${req.body.password}`);
+            console.log(`Found User password: ${foundUser.password}`);
             req.session.user = {
                 id:foundUser.id,
                 username:foundUser.username
@@ -25,7 +27,9 @@ router.post("/login",(req,res)=>{
             console.log(foundUser);
             return res.json(foundUser);
         } else {
-            return res.status(401).json({msg:"Invalid username/password."})
+            console.log(`Request password: ${req.body.password}`);
+            console.log(`Found User password: ${foundUser.password}`);
+            return res.status(401).json({msg:"Invalid username/password type 2"})
         }
     })
 });
@@ -55,8 +59,30 @@ router.post("/logout", (req,res)=>{
     });
 });
 
+//Route for creating a new character
+router.post("/newchar/:id", async (req, res) => {
+    try {
+        const char = await Character.create(req.body)
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $addToSet: { characters: char } },
+            { runValidators: true, new: true }
+        )
+        if (user) {
+            console.log(user)
+            console.log(`User ${user} located. Adding new character.`)
+            return res.json(char)
+        } else {
+            return res.json('No user with that ID found.')
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
 
-//TODO: Replace sesions with JWT 
+
+//TODO: Replace sessions with JWT 
 //Session routes, for development
 router.get("/showsessions", (req, res) => {
     res.json(req.session);
@@ -69,7 +95,7 @@ router.get("/clearsessions/", (req, res) => {
 
 //Shows all users, this is for development only
 router.get("/showall", (req, res) => {
-    User.findAll().then(users => res.json(users))
+    User.find({ include: [Character] }).then(users => res.json(users))
 });
 
 module.exports = router;

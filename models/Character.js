@@ -16,7 +16,7 @@ const characterSchema = new Schema(
     },
 
     level: {
-      type: Integer,
+      type: Number,
       required: true,
     }, 
 

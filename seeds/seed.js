@@ -1,10 +1,3 @@
-const users = [
-    {
-        username:"shawnanalla",
-        password:"metagross",
-    }
-]
-
 const enemies = [
     {
         enemyName:"Joe Rehfuss",
@@ -175,6 +168,16 @@ const characters = [
     }
 ]
 
+const users = [
+    {
+        username:"shawnanalla",
+        password:"password",
+        characters: [characters[0]],
+    }
+]
+
+//presave doesn't work on insertMany
+//run creates one at a time
 const MongoClient = require("mongodb").MongoClient;
 require('dotenv').config();
 
@@ -188,17 +191,17 @@ const seed = async ()=> {
     try {
         await client.connect();
         console.log("Connected correctly to server");
-        const userCollection = client.db("rpgDB").collection("users");
         const enemyCollection = client.db("rpgDB").collection("enemies");
         const charCollection = client.db("rpgDB").collection("characters");
+        const userCollection = client.db("rpgDB").collection("users");
 
         userCollection.drop();
         enemyCollection.drop();
         charCollection.drop();
-
-        userCollection.insertMany(users);
-        enemyCollection.insertMany(enemies);
-        charCollection.insertMany(characters);
+        
+        await enemyCollection.insertMany(enemies);
+        await charCollection.insertMany(characters);
+        await userCollection.insertMany(users);
 
         console.log("Seed successful!");
         process.exit(0);
