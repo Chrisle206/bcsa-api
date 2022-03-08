@@ -1,3 +1,5 @@
+const { User } = require("../models");
+
 const enemies = [
     {
         enemyName:"Joe Rehfuss",
@@ -173,13 +175,49 @@ const users = [
         username:"shawnanalla",
         password:"password",
         characters: [characters[0]],
-    }
+    },
+    {
+        username:"chrisle",
+        password:"password",
+        characters: [characters[0]],
+    },
 ]
 
-//presave doesn't work on insertMany
-//run creates one at a time
+
 const MongoClient = require("mongodb").MongoClient;
+const mongoose = require('mongoose');
 require('dotenv').config();
+const bcrypt = require('bcrypt');
+
+//Hash passwords before inserting into collection
+for (let i = 0; i < users.length; i++) {
+    const element = users[i];
+    users[i].password = bcrypt.hashSync(users[i].password, 10, function(err, hash) {
+        if (err) return next(err);
+        users[i].password = hash;
+    });
+    
+}
+// users[0].password = bcrypt.hashSync(users[0].password, 10, function(err, hash) {
+//     if (err) return next(err);
+//     // override the cleartext password with the hashed one
+//     users[0].password = hash;
+//     // next();
+// });
+
+// bcrypt.genSalt(10, function(err, salt) {
+//     if (err) return next(err);
+
+//     // hash the password using our new salt
+//     bcrypt.hashSync(users[0].password, 10, function(err, hash) {
+//         if (err) return next(err);
+//         // override the cleartext password with the hashed one
+//         users[0].password = hash;
+//         next();
+//     });
+// });
+
+
 
 const seed = async ()=> {
     const uri = process.env.MONGODB_URI;
@@ -188,6 +226,7 @@ const seed = async ()=> {
         useNewUrlParser: true,
     });
 
+
     try {
         await client.connect();
         console.log("Connected correctly to server");
@@ -195,13 +234,53 @@ const seed = async ()=> {
         const charCollection = client.db("rpgDB").collection("characters");
         const userCollection = client.db("rpgDB").collection("users");
 
-        userCollection.drop();
-        enemyCollection.drop();
-        charCollection.drop();
+        await userCollection.drop();
+        await enemyCollection.drop();
+        await charCollection.drop();
         
         await enemyCollection.insertMany(enemies);
         await charCollection.insertMany(characters);
         await userCollection.insertMany(users);
+
+        // hashPw()
+
+        // Does not create any users
+        // for (const user of users) {
+        //     console.log(user)
+        //     const newUser = await User.create({user}, function(err) {
+        //         if (err) throw err;
+            
+        //     console.log(newUser);
+        //     userCollection.insertOne(newUser);   
+        //     })   
+        // }
+
+        //Does not create any users
+        // const testUser = User.create(users[0])
+        // userCollection.insertOne(testUser);
+
+        //Does not create any users
+        // const asyncCreate = async ()=>  {
+        //     for (let i = 0; i < users.length; i++) {
+        //         // console.log(users[i])
+        //         const newUser = await User.create(users[i])
+        //         console.log(newUser)
+        //         await userCollection.insertOne(newUser)
+        //     }
+        // }
+        // asyncCreate();
+
+        //Does not create any users
+        // console.log(users[0])
+        // const asyncCreate = async () => {
+        //     const testUser = await User.create(users[0])
+        //     .then(testUser => {
+        //         console.log(testUser);
+        //         userCollection.insertOne(testUser);
+        //     })
+    
+        // }
+        // asyncCreate();
 
         console.log("Seed successful!");
         process.exit(0);
