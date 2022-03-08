@@ -15,6 +15,11 @@ const characterSchema = new Schema(
       trim:true,
     },
 
+    level: {
+      type: Number,
+      required: true,
+    }, 
+
     attacks: [],
 
     items: [],

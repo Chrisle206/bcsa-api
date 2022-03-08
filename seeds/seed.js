@@ -1,24 +1,9 @@
-const users = [
-    {
-        username:"shawnanalla",
-        password:"metagross",
-    }
-]
-
-//TODO: Talk to Chris about structure for attacks data for both enemies and user characters.
 const enemies = [
     {
         enemyName:"Joe Rehfuss",
-        attacks: [
-            {atkName: "Room Mute", atkDmg: [30,50]}, 
-            {atkName: "Random Name Selector", atkDmg: [50,60]}, 
-            {atkName: "Confusing Demo", atkDmg: [40,50]}, 
-            {atkName: "Manatee Joke", atkDmg: [20,30]}, 
-            {atkName: "Bahamut Bash", atkDmg: [30,50]}, 
-            {atkName: "Shiva Shank", atkDmg: [30,50]}, 
-            {atkName: "La Croix Heal", atkDmg: [30,50]}, 
-        ],
 
+        level: 1000,
+        
         attacks: [
             "Room Mute",
             "Random Name Selector",
@@ -29,10 +14,20 @@ const enemies = [
             "La Croix Heal"
         ],
 
+        dialogue: [
+          "Remember to check into class on bootcampspot!"  
+        ],
+
         idles: [
             "Joe is busy trying to get his cat off of the keyboard.",
             "Joe seems to be daydreaming about manatees.",
             "Joe seems too preoccupied with playing Stardew Valley to attack."
+        ],
+
+        taunts: [
+            "Class participation is mandatory!",
+            "You should know this stuff already!",
+            "How do fish unlock their houses? With their manakeys!",
         ],
 
         image: '',
@@ -42,11 +37,112 @@ const enemies = [
         def: 50
 
     }, 
+
+    {
+        enemyName:"Frantz Felix",
+
+        level: 75,
+
+        attacks: [
+            "Algorithm Challenge",
+            "Dead Headset",
+            "Remote Access",
+        ],
+
+        dialogue: [
+          "Frantz appears to be saying something but doesn't realize his headset has died."  
+        ],
+
+        idles: [
+            "Frantz is trying on different hats.",
+        ],
+
+        taunts: [],
+
+        image: '',
+
+        hp: 500,
+        atk: 50,
+        def: 50
+
+    }, 
+
+    {
+        enemyName:"Brett Belka",
+
+        level: 75,
+
+        attacks: [
+            "Bad Grade",
+            "Cap Attack",
+            "Snowboard Bash",
+        ],
+
+        dialogue: [
+          ""  
+        ],
+
+        idles: [
+            "Brett keeps getting interrupted by his children.",
+            "Brett is googling something and ignoring you."
+        ],
+
+        taunts: [
+            "Brett's kind expression seems to belie a subtle hint of wrath.",
+            "Brett is not amused."
+        ],
+
+        image: '',
+
+        hp: 500,
+        atk: 50,
+        def: 50
+
+    }, 
+
+    {
+        enemyName:"Louis Coleman",
+
+        level: 75,
+
+        attacks: [
+            "Louis's Wrath",
+            "Raid Rage",
+            "Charizard's Flamethrower",
+        ],
+
+        dialogue: [
+          "I'll save you the headache and end this quickly."  
+        ],
+
+        idles: [
+            "Louis looks like he'd rather be playing FFXIV",
+            "Louis is AFK",
+            "Louis seems preoccupied with peacocking his one-line functions",
+        ],
+
+        taunts: [
+            "No, no, no. Back up.",
+            "How would you monetize this?",
+            "Louis glares menacingly."
+        ],
+
+        image: '',
+
+        hp: 500,
+        atk: 50,
+        def: 50
+
+    }, 
+
 ]
 
 const characters = [
     {
         characterName: "BCS Champ",
+
+        level: 80,
+
         attacks: [
             {atkName: "Atk1", atkDmg: [30]}, 
             {atkName: "Atk2", atkDmg: [30]}, 
@@ -56,7 +152,7 @@ const characters = [
 
         items: [
             "Potion of Postponement",
-            "Mongo Mallet",
+            "Hu-Mongo Mallet",
             "Sword of Sequelize",
             "Shiva's Fang",
             "Brett's Skis", 
@@ -72,6 +168,48 @@ const characters = [
     }
 ]
 
+const users = [
+    {
+        username:"shawnanalla",
+        password:"password",
+        characters: [characters[0]],
+    }
+]
+
+//presave doesn't work on insertMany
+//run creates one at a time
+const MongoClient = require("mongodb").MongoClient;
+require('dotenv').config();
+
 const seed = async ()=> {
-    await User.bulkCreate
+    const uri = process.env.MONGODB_URI;
+
+    const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+    });
+
+    try {
+        await client.connect();
+        console.log("Connected correctly to server");
+        const enemyCollection = client.db("rpgDB").collection("enemies");
+        const charCollection = client.db("rpgDB").collection("characters");
+        const userCollection = client.db("rpgDB").collection("users");
+
+        userCollection.drop();
+        enemyCollection.drop();
+        charCollection.drop();
+        
+        await enemyCollection.insertMany(enemies);
+        await charCollection.insertMany(characters);
+        await userCollection.insertMany(users);
+
+        console.log("Seed successful!");
+        process.exit(0);
+        // client.close();
+
+    } catch (err) {
+        console.log(err.stack);
+    }
 }
+
+seed();

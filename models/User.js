@@ -23,6 +23,12 @@ const userSchema = new Schema(
       required: true,
       max_length: 50,
     },
+    characters: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'character'
+      }
+    ]
   },
   {
     toJSON: {
