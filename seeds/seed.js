@@ -139,11 +139,17 @@ const enemies = [
 
 ]
 
+const extraEnemies = [
+
+]
+
 const characters = [
     {
         characterName: "BCS Champ",
 
         level: 80,
+
+        currency: 1000,
 
         attacks: [
             {atkName: "Atk1", atkDmg: [30]}, 
