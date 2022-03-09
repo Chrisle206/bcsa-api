@@ -23,6 +23,9 @@ const userSchema = new Schema(
       required: true,
       max_length: 50,
     },
+    token: {
+      type: String,
+    },
     characters: [
       {
         type: Schema.Types.ObjectId,

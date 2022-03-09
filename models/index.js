@@ -2,4 +2,4 @@ const User = require('./User');
 const Enemy = require('./Enemy');
 const Character = require('./Character');
 
-module.exports = { User };
+module.exports = { User, Enemy, Character };

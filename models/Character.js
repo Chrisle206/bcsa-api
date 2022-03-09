@@ -18,7 +18,13 @@ const characterSchema = new Schema(
     level: {
       type: Number,
       required: true,
+      default: 1
     }, 
+
+    currency: {
+      type: Number,
+      default: 0
+    },
 
     attacks: [],
 

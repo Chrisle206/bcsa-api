@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-//TODO: JWT is not yet implemented
-
 const config = process.env;
 
 const verifyToken = (req, res, next) => {

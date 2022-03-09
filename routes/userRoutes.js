@@ -1,58 +1,92 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
-const session = require('express-session');
-const bcrypt = require("bcrypt")
-// const router = express.Router();
-const { User } = require("../models");
-const Character = require('../models/Character');
+const bcrypt = require("bcrypt");
+var jwt = require('jsonwebtoken');
+const auth = require("../middleware/auth");
+require('dotenv').config();
+const { User, Character } = require("../models");
 
-
-//TODO: Replace sessions with JWT.
 // Login route
 router.post("/login", async (req,res)=>{
-    // console.log(req.body);
-    User.findOne({username:req.body.username})
+    const { username, password } = req.body
+    User.findOne({ username })
     .then(foundUser=>{
         console.log(foundUser);
         if(!foundUser){
-            return res.status(401).json({msg:"Invalid username/password type 1"})
+            return res.status(400).json({msg:"Invalid username/password type 1"})
         }
-        if(bcrypt.compareSync(req.body.password,foundUser.password)){
+        if(bcrypt.compareSync(password, foundUser.password)){
+            const token = jwt.sign(
+                { user_id: foundUser._id, username },
+                process.env.TOKEN_KEY,
+                {
+                    expiresIn: "1d",
+                }
+            );
+
+            foundUser.token = token;
+
+            //Remove from final product, for debugging only
             console.log(`Request password: ${req.body.password}`);
             console.log(`Found User password: ${foundUser.password}`);
+
+            // Old code using sessions instead of JWT
             req.session.user = {
                 id:foundUser.id,
                 username:foundUser.username
             }
             console.log(foundUser);
-            return res.json(foundUser);
+            return res.status(200).json(foundUser);
         } else {
+            //Remove from final product, for debugging only
             console.log(`Request password: ${req.body.password}`);
             console.log(`Found User password: ${foundUser.password}`);
-            return res.status(401).json({msg:"Invalid username/password type 2"})
+            return res.status(400).json({msg:"Invalid username/password type 2"})
         }
     })
 });
 
 //Sign up route
-router.post("/signup", (req,res) => {
-    User.create({
-        username:req.body.username,
-        password:req.body.password
-    }).then(newUser => {
+router.post("/signup", async (req, res) => {
+    try {
+        const { username, password } = req.body
+
+        //Check if username already exists
+        const oldUser = await User.findOne({ username })
+        if (oldUser) {
+            return res.status(409).send("Username taken. Please choose a different username.");
+        };
+
+        const user = await User.create({
+            username,
+            password
+        });
+
         req.session.user = {
-            id:newUser.id,
-            username:newUser.username
-        }
-        console.log(newUser)
-        res.json(newUser)
-    }).catch(err => {
+            id: user.id,
+            username: user.username
+        };
+        console.log(`Session created for ${user.username}`)
+
+        const token = jwt.sign(
+            { user_id: user._id, username },
+            process.env.TOKEN_KEY,
+            {
+                expiresIn: "1d",
+            }
+        );
+
+        user.token = token;
+        console.log(user);
+        res.status(201).json(user);
+
+    }
+    catch (err) {
         throw err;
-    })
+    }
 });
 
 //Logout route
-router.post("/logout", (req,res)=>{
+router.post("/logout", auth, (req,res)=>{
     req.session.destroy(() => {
         console.log("Logged out.")    
         res.status(204).end();
@@ -82,7 +116,6 @@ router.post("/newchar/:id", async (req, res) => {
 });
 
 
-//TODO: Replace sessions with JWT 
 //Session routes, for development
 router.get("/showsessions", (req, res) => {
     res.json(req.session);
@@ -95,7 +128,7 @@ router.get("/clearsessions/", (req, res) => {
 
 //Shows all users, this is for development only
 router.get("/showall", (req, res) => {
-    User.find({ include: [Character] }).then(users => res.json(users))
+    User.find().then(users => res.json(users))
 });
 
 module.exports = router;

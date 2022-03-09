@@ -1,17 +1,18 @@
 const express = require('express');
 require('dotenv').config();
 const db = require('./config/connection');
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const routes = require('./routes');
+const session = require('express-session');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-//TODO: Replace sessions with JWT
 const sess = {
   secret: process.env.TOKEN_KEY,
-  cookie: {},
+  cookie: {
+    maxAge: 86400000
+  },
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
@@ -22,9 +23,9 @@ const sess = {
 };
 
 
+app.use(session(sess));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(session(sess));
 app.use(routes);
 
 db.once('open', () => {
