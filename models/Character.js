@@ -26,6 +26,11 @@ const characterSchema = new Schema(
       default: 0
     },
 
+    exp: {
+      type: Number,
+      default: 0,
+    },
+
     attacks: [],
 
     items: [],
