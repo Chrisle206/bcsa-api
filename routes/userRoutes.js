@@ -8,8 +8,12 @@ const { User, Character } = require("../models");
 // Login route
 router.post("/login", async (req,res)=>{
     const { username, password } = req.body
-    User.findOne({ username })
-    .then(foundUser=>{
+    const foundUser = await User.findOne({ username: username })
+    .populate('characters')
+    // .exec((err) => {
+    //     if (err) throw err;
+    //     console.log(`Populated ${username}'s characters.`)
+    // })
         console.log(foundUser);
         if(!foundUser){
             return res.status(400).json({msg:"Invalid username/password type 1"})
@@ -25,25 +29,17 @@ router.post("/login", async (req,res)=>{
 
             foundUser.token = token;
 
-            //Remove from final product, for debugging only
-            console.log(`Request password: ${req.body.password}`);
-            console.log(`Found User password: ${foundUser.password}`);
-
             // Old code using sessions instead of JWT
-            req.session.user = {
-                id:foundUser.id,
-                username:foundUser.username
-            }
+            // req.session.user = {
+            //     id:foundUser.id,
+            //     username:foundUser.username
+            // }
             console.log(foundUser);
             return res.status(200).json(foundUser);
         } else {
-            //Remove from final product, for debugging only
-            console.log(`Request password: ${req.body.password}`);
-            console.log(`Found User password: ${foundUser.password}`);
             return res.status(400).json({msg:"Invalid username/password type 2"})
         }
-    })
-});
+    });
 
 //Sign up route
 router.post("/signup", async (req, res) => {
@@ -61,10 +57,10 @@ router.post("/signup", async (req, res) => {
             password
         });
 
-        req.session.user = {
-            id: user.id,
-            username: user.username
-        };
+        // req.session.user = {
+        //     id: user.id,
+        //     username: user.username
+        // };
         console.log(`Session created for ${user.username}`)
 
         const token = jwt.sign(
@@ -94,7 +90,7 @@ router.post("/logout", auth, (req,res)=>{
 });
 
 //Route for creating a new character
-router.post("/newchar/:id", async (req, res) => {
+router.post("/newchar/:id", auth, async (req, res) => {
     try {
         const char = await Character.create(req.body)
         const user = await User.findOneAndUpdate(
@@ -109,6 +105,22 @@ router.post("/newchar/:id", async (req, res) => {
         } else {
             return res.json('No user with that ID found.')
         }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
+
+//PUT route for updating character stats
+router.put("/charupdate/:id", auth, async (req, res) => {
+    try {
+        const character = await Character.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: req.body },
+            { runValidators: true, new: true })
+
+        console.log(`${character.characterName} has been updated.`)
+        return res.json(character)
     } catch (err) {
         console.log(err);
         res.status(500).json(err);

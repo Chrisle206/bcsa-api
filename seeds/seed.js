@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Enemy, Character } = require("../models");
 
 const enemies = [
     {
@@ -17,7 +17,8 @@ const enemies = [
         ],
 
         dialogue: [
-          "Remember to check into class on bootcampspot!"  
+          "Remember to check into class on bootcampspot!",
+          "Joes infernal soul has been locked away in an infinite Javascript loop."  
         ],
 
         idles: [
@@ -57,6 +58,7 @@ const enemies = [
 
         idles: [
             "Frantz is trying on different hats.",
+            "Frantz is busy drawing a diagram of a linked list."
         ],
 
         taunts: [],
@@ -81,7 +83,7 @@ const enemies = [
         ],
 
         dialogue: [
-          ""  
+          "Brett positions his ski poles for striking."  
         ],
 
         idles: [
@@ -91,7 +93,8 @@ const enemies = [
 
         taunts: [
             "Brett's kind expression seems to belie a subtle hint of wrath.",
-            "Brett is not amused."
+            "Brett is not amused.",
+            "Good effort overall! But it won't be enough."
         ],
 
         image: '',
@@ -118,13 +121,13 @@ const enemies = [
         ],
 
         idles: [
-            "Louis looks like he'd rather be playing FFXIV",
-            "Louis is AFK",
-            "Louis seems preoccupied with peacocking his one-line functions",
+            "Louis looks like he'd rather be playing FFXIV.",
+            "Louis is AFK.",
+            "Louis seems preoccupied with peacocking his one-line functions.",
         ],
 
         taunts: [
-            "No, no, no. Back up.",
+            "No, no, no. Stop what you're doing. Back up.",
             "How would you monetize this?",
             "Louis glares menacingly."
         ],
@@ -139,7 +142,103 @@ const enemies = [
 
 ]
 
+//These enemies are placeholders for demo purposes. They can be reutilized in adventure mode if we have time to develop it.
 const extraEnemies = [
+    {
+        enemyName:"Evil Bug",
+
+        level: 5,
+
+        attacks: [
+            "Console Crash",
+            "null",
+            "undefined"
+        ],
+
+        dialogue: [
+          "Tzzt!",
+          "The bug has been squished."
+        ],
+
+        idles: [
+            "The bug looks like it's hiding something.",
+            "The bug is shouting in a red-colored font.",
+            "The bug seems to jitter about.",
+        ],
+
+        taunts: [
+            "Tzzt!",
+        ],
+
+        image: '',
+
+        hp: 100,
+        atk: 5,
+        def: 1
+
+    }, 
+
+    {
+        enemyName:"CS Major",
+
+        level: 10,
+
+        attacks: [
+            "Obscure Rambling",
+            "Student Debt",
+            "Bitterness"
+        ],
+
+        dialogue: [
+          "Imposter!",
+        ],
+
+        idles: [
+            "The student looks too tired and miserable to attack.",
+        ],
+
+        taunts: [
+            "Noob!",
+        ],
+
+        image: '',
+
+        hp: 150,
+        atk: 10,
+        def: 5
+
+    }, 
+
+    {
+        enemyName:"Corrupted AI",
+
+        level: 15,
+
+        attacks: [
+            "Uncanny Valley",
+            "The Singularity",
+            "Quantum Kick"
+        ],
+
+        dialogue: [
+          "HELLO I AM HUMAN",
+        ],
+
+        idles: [
+            "DO NOT FEAR THE FUTURE",
+        ],
+
+        taunts: [
+            "MACHINES WILL INHERIT THE EARTH",
+        ],
+
+        image: '',
+
+        hp: 150,
+        atk: 10,
+        def: 5
+
+    }, 
 
 ]
 
@@ -147,9 +246,9 @@ const characters = [
     {
         characterName: "BCS Champ",
 
-        level: 80,
+        level: 100,
 
-        currency: 1000,
+        currency: 10000,
 
         attacks: [
             {atkName: "Atk1", atkDmg: [30]}, 
@@ -170,8 +269,8 @@ const characters = [
         image: '',
 
         hp: 1000,
-        atk: 1000,
-        def: 1000
+        atk: 250,
+        def: 250
 
     }
 ]
@@ -180,12 +279,18 @@ const users = [
     {
         username:"shawnanalla",
         password:"password",
-        characters: [characters[0]],
     },
     {
         username:"chrisle",
         password:"password",
-        characters: [characters[0]],
+    },
+    {
+        username:"datnguyen",
+        password:"password",
+    },
+    {
+        username:"bendo",
+        password:"password",
     },
 ]
 
@@ -194,6 +299,7 @@ const MongoClient = require("mongodb").MongoClient;
 const mongoose = require('mongoose');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const connection = require("../config/connection");
 
 //Hash passwords before inserting into collection
 for (let i = 0; i < users.length; i++) {
@@ -224,77 +330,83 @@ for (let i = 0; i < users.length; i++) {
 // });
 
 
+//use mongoose methods to seed, not mongo
+//create character, create user, find character, update user
+connection.once('open', async ()=> {
 
-const seed = async ()=> {
-    const uri = process.env.MONGODB_URI;
-
-    const client = new MongoClient(uri, {
-        useNewUrlParser: true,
-    });
-
-
-    try {
-        await client.connect();
-        console.log("Connected correctly to server");
-        const enemyCollection = client.db("rpgDB").collection("enemies");
-        const charCollection = client.db("rpgDB").collection("characters");
-        const userCollection = client.db("rpgDB").collection("users");
-
-        await userCollection.drop();
-        await enemyCollection.drop();
-        await charCollection.drop();
-        
-        await enemyCollection.insertMany(enemies);
-        await charCollection.insertMany(characters);
-        await userCollection.insertMany(users);
-
-        // hashPw()
-
-        // Does not create any users
-        // for (const user of users) {
-        //     console.log(user)
-        //     const newUser = await User.create({user}, function(err) {
-        //         if (err) throw err;
-            
-        //     console.log(newUser);
-        //     userCollection.insertOne(newUser);   
-        //     })   
-        // }
-
-        //Does not create any users
-        // const testUser = User.create(users[0])
-        // userCollection.insertOne(testUser);
-
-        //Does not create any users
-        // const asyncCreate = async ()=>  {
-        //     for (let i = 0; i < users.length; i++) {
-        //         // console.log(users[i])
-        //         const newUser = await User.create(users[i])
-        //         console.log(newUser)
-        //         await userCollection.insertOne(newUser)
-        //     }
-        // }
-        // asyncCreate();
-
-        //Does not create any users
-        // console.log(users[0])
-        // const asyncCreate = async () => {
-        //     const testUser = await User.create(users[0])
-        //     .then(testUser => {
-        //         console.log(testUser);
-        //         userCollection.insertOne(testUser);
-        //     })
+    await User.deleteMany({});
+    await Enemy.deleteMany({});
+    await Character.deleteMany({});
     
-        // }
-        // asyncCreate();
+    const usersDB = await User.insertMany(users);
+    await Enemy.insertMany(enemies);
+    const charDB = await Character.insertMany(characters);
 
-        console.log("Seed successful!");
-        process.exit(0);
-        // client.close();
+    usersDB[0].characters.push(charDB[0]._id);
+    await usersDB[0].save();
 
-    } catch (err) {
-        console.log(err.stack);
-    }
-}
+    console.log("Seed successful!");
+    process.exit(0);
 
-seed();
+});
+
+// try {
+//     const enemyCollection = client.db("rpgDB").collection("enemies");
+//     const charCollection = client.db("rpgDB").collection("characters");
+//     const userCollection = client.db("rpgDB").collection("users");
+
+//     await userCollection.drop();
+//     await enemyCollection.drop();
+//     await charCollection.drop();
+    
+//     await enemyCollection.insertMany(enemies);
+//     await charCollection.insertMany(characters);
+//     await userCollection.insertMany(users);
+
+//     // hashPw()
+
+//     // Does not create any users
+//     // for (const user of users) {
+//     //     console.log(user)
+//     //     const newUser = await User.create({user}, function(err) {
+//     //         if (err) throw err;
+        
+//     //     console.log(newUser);
+//     //     userCollection.insertOne(newUser);   
+//     //     })   
+//     // }
+
+//     //Does not create any users
+//     // const testUser = User.create(users[0])
+//     // userCollection.insertOne(testUser);
+
+//     //Does not create any users
+//     // const asyncCreate = async ()=>  {
+//     //     for (let i = 0; i < users.length; i++) {
+//     //         // console.log(users[i])
+//     //         const newUser = await User.create(users[i])
+//     //         console.log(newUser)
+//     //         await userCollection.insertOne(newUser)
+//     //     }
+//     // }
+//     // asyncCreate();
+
+//     //Does not create any users
+//     // console.log(users[0])
+//     // const asyncCreate = async () => {
+//     //     const testUser = await User.create(users[0])
+//     //     .then(testUser => {
+//     //         console.log(testUser);
+//     //         userCollection.insertOne(testUser);
+//     //     })
+
+//     // }
+//     // asyncCreate();
+
+//     console.log("Seed successful!");
+//     process.exit(0);
+//     // client.close();
+
+// } catch (err) {
+//     console.log(err.stack);
+// }

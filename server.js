@@ -4,9 +4,12 @@ const db = require('./config/connection');
 const MongoStore = require('connect-mongo');
 const routes = require('./routes');
 const session = require('express-session');
+const cors = require("cors");
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+app.use(cors());
 
 const sess = {
   secret: process.env.TOKEN_KEY,
