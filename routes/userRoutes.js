@@ -81,13 +81,18 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-//Logout route
-// router.post("/logout", auth, (req,res)=>{
-//     req.session.destroy(() => {
-//         console.log("Logged out.")    
-//         res.status(204).end();
-//     });
-// });
+//Route for accessing character details
+router.get("/char/:id", auth, async (req, res) =>{
+    try {
+        const _id = req.params.id;
+        const character = await Character.findById({ _id });
+        console.log(`{${character.characterName} has been requested from the server.}`);
+        res.status(200).json(character);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
 
 //Route for creating a new character
 router.post("/newchar/:id", auth, async (req, res) => {
