@@ -61,7 +61,7 @@ router.post("/signup", async (req, res) => {
         //     id: user.id,
         //     username: user.username
         // };
-        console.log(`Session created for ${user.username}`)
+        // console.log(`Session created for ${user.username}`)
 
         const token = jwt.sign(
             { user_id: user._id, username },
@@ -82,12 +82,12 @@ router.post("/signup", async (req, res) => {
 });
 
 //Logout route
-router.post("/logout", auth, (req,res)=>{
-    req.session.destroy(() => {
-        console.log("Logged out.")    
-        res.status(204).end();
-    });
-});
+// router.post("/logout", auth, (req,res)=>{
+//     req.session.destroy(() => {
+//         console.log("Logged out.")    
+//         res.status(204).end();
+//     });
+// });
 
 //Route for creating a new character
 router.post("/newchar/:id", auth, async (req, res) => {
