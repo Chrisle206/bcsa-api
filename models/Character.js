@@ -15,6 +15,11 @@ const characterSchema = new Schema(
       trim:true,
     },
 
+    characterClass: {
+      type: String,
+      required: true,
+    },
+
     level: {
       type: Number,
       required: true,

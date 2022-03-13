@@ -1,6 +1,14 @@
 const { User, Enemy, Character } = require("../models");
+import joe2 from "../lib/assets/joe2.png"
+import assassin from "../lib/assets/assassin.png"
+import joe2 from "../lib/assets/joe2.png"
+import joe2 from "../lib/assets/joe2.png"
+import joe2 from "../lib/assets/joe2.png"
+import joe2 from "../lib/assets/joe2.png"
+import joe2 from "../lib/assets/joe2.png"
+import joe2 from "../lib/assets/joe2.png"
 
-const enemies = [
+const bosses = [
     {
         enemyName:"Joe Rehfuss",
 
@@ -13,7 +21,7 @@ const enemies = [
             "Manatee Joke",
             "Bahamut Bash",
             "Shiva Shank",
-            "La Croix Heal"
+            "Bikeshedding"
         ],
 
         dialogue: [
@@ -33,7 +41,7 @@ const enemies = [
             "How do fish unlock their houses? With their manakeys!",
         ],
 
-        image: '',
+        image: joe2,
 
         hp: 500,
         atk: 50,
@@ -49,19 +57,24 @@ const enemies = [
         attacks: [
             "Algorithm Challenge",
             "Dead Headset",
-            "Remote Access",
+            "Remote Access Control",
         ],
 
         dialogue: [
-          "Frantz appears to be saying something but doesn't realize his headset has died."  
+          "Frantz appears to be saying something but doesn't realize his headset has died.",
+          "Frantz turns off his camera and slips away into the darkness."  
         ],
 
         idles: [
             "Frantz is trying on different hats.",
-            "Frantz is busy drawing a diagram of a linked list."
+            "Frantz is busy drawing a diagram of a linked list.",
+            "Frantz seems suspiciously quiet."
         ],
 
-        taunts: [],
+        taunts: [
+            "Frantz smiles at you after attacking.",
+            "Frantz is not amused.",
+        ],
 
         image: '',
 
@@ -78,12 +91,13 @@ const enemies = [
 
         attacks: [
             "Bad Grade",
-            "Cap Attack",
+            "Six-Page Resume",
             "Snowboard Bash",
         ],
 
         dialogue: [
-          "Brett positions his ski poles for striking."  
+          "Brett positions his ski poles for striking.",
+          "Brett seems happy to have been defeated as he skiis off into the distance."  
         ],
 
         idles: [
@@ -93,7 +107,6 @@ const enemies = [
 
         taunts: [
             "Brett's kind expression seems to belie a subtle hint of wrath.",
-            "Brett is not amused.",
             "Good effort overall! But it won't be enough."
         ],
 
@@ -117,7 +130,8 @@ const enemies = [
         ],
 
         dialogue: [
-          "I'll save you the headache and end this quickly."  
+          "I'll save you the headache and end this quickly.",
+          "Louis seems fed up with you and leaves."  
         ],
 
         idles: [
@@ -143,7 +157,7 @@ const enemies = [
 ]
 
 //These enemies are placeholders for demo purposes. They can be reutilized in adventure mode if we have time to develop it.
-const extraEnemies = [
+const enemies = [
     {
         enemyName:"Evil Bug",
 
@@ -162,8 +176,7 @@ const extraEnemies = [
 
         idles: [
             "The bug looks like it's hiding something.",
-            "The bug is shouting in a red-colored font.",
-            "The bug seems to jitter about.",
+            "The bug seems to jitter about."
         ],
 
         taunts: [
@@ -246,6 +259,8 @@ const characters = [
     {
         characterName: "BCS Champ",
 
+        characterClass: "Keyboard Warrior",
+
         level: 100,
 
         currency: 10000,
@@ -258,6 +273,32 @@ const characters = [
         ],
 
         items: [
+            "Round Pebble",
+            "101 Manatee Jokes",
+            "Bug Squisher",
+            "Ronnel's Memoir",
+            "Ring of Regex",
+            "Node Docs",
+            "La Croix",
+            "Shiva's Fang",
+            "Bahamut's Box",
+            "DOM Map",
+            "MIT License",
+            "UDEMY Course Coupon",
+            "Best Practices Handbook",
+            "Mongo's Compass",
+            "Flexbox Froggy",
+            "Magic Keyboard",
+            "Callback Quiver",
+            "Orb of OOP",
+            "Wand of Recursion",
+            "Bootstrap Dagger",
+            "Paradigm-Padded Armor",
+            "Excalidraw",
+            "Nodemon Dagger",
+            "HashSync Shield",
+            "Arcane Config",
+            "API Skeleton Key",
             "Potion of Postponement",
             "Hu-Mongo Mallet",
             "Sword of Sequelize",
@@ -310,28 +351,7 @@ for (let i = 0; i < users.length; i++) {
     });
     
 }
-// users[0].password = bcrypt.hashSync(users[0].password, 10, function(err, hash) {
-//     if (err) return next(err);
-//     // override the cleartext password with the hashed one
-//     users[0].password = hash;
-//     // next();
-// });
 
-// bcrypt.genSalt(10, function(err, salt) {
-//     if (err) return next(err);
-
-//     // hash the password using our new salt
-//     bcrypt.hashSync(users[0].password, 10, function(err, hash) {
-//         if (err) return next(err);
-//         // override the cleartext password with the hashed one
-//         users[0].password = hash;
-//         next();
-//     });
-// });
-
-
-//use mongoose methods to seed, not mongo
-//create character, create user, find character, update user
 connection.once('open', async ()=> {
 
     await User.deleteMany({});
@@ -340,6 +360,7 @@ connection.once('open', async ()=> {
     
     const usersDB = await User.insertMany(users);
     await Enemy.insertMany(enemies);
+    await Enemy.insertMany(bosses);
     const charDB = await Character.insertMany(characters);
 
     usersDB[0].characters.push(charDB[0]._id);
@@ -349,64 +370,3 @@ connection.once('open', async ()=> {
     process.exit(0);
 
 });
-
-// try {
-//     const enemyCollection = client.db("rpgDB").collection("enemies");
-//     const charCollection = client.db("rpgDB").collection("characters");
-//     const userCollection = client.db("rpgDB").collection("users");
-
-//     await userCollection.drop();
-//     await enemyCollection.drop();
-//     await charCollection.drop();
-    
-//     await enemyCollection.insertMany(enemies);
-//     await charCollection.insertMany(characters);
-//     await userCollection.insertMany(users);
-
-//     // hashPw()
-
-//     // Does not create any users
-//     // for (const user of users) {
-//     //     console.log(user)
-//     //     const newUser = await User.create({user}, function(err) {
-//     //         if (err) throw err;
-        
-//     //     console.log(newUser);
-//     //     userCollection.insertOne(newUser);   
-//     //     })   
-//     // }
-
-//     //Does not create any users
-//     // const testUser = User.create(users[0])
-//     // userCollection.insertOne(testUser);
-
-//     //Does not create any users
-//     // const asyncCreate = async ()=>  {
-//     //     for (let i = 0; i < users.length; i++) {
-//     //         // console.log(users[i])
-//     //         const newUser = await User.create(users[i])
-//     //         console.log(newUser)
-//     //         await userCollection.insertOne(newUser)
-//     //     }
-//     // }
-//     // asyncCreate();
-
-//     //Does not create any users
-//     // console.log(users[0])
-//     // const asyncCreate = async () => {
-//     //     const testUser = await User.create(users[0])
-//     //     .then(testUser => {
-//     //         console.log(testUser);
-//     //         userCollection.insertOne(testUser);
-//     //     })
-
-//     // }
-//     // asyncCreate();
-
-//     console.log("Seed successful!");
-//     process.exit(0);
-//     // client.close();
-
-// } catch (err) {
-//     console.log(err.stack);
-// }
