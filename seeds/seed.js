@@ -1,12 +1,13 @@
 const { User, Enemy, Character } = require("../models");
 import joe2 from "../lib/assets/joe2.png"
 import assassin from "../lib/assets/assassin.png"
-import joe2 from "../lib/assets/joe2.png"
-import joe2 from "../lib/assets/joe2.png"
-import joe2 from "../lib/assets/joe2.png"
-import joe2 from "../lib/assets/joe2.png"
-import joe2 from "../lib/assets/joe2.png"
-import joe2 from "../lib/assets/joe2.png"
+import brett from "../lib/assets/brett.png"
+import frantz from "../lib/assets/frantz.png"
+import lacroix from "../lib/assets/lacroix.png"
+import lewis from "../lib/assets/lewis.png"
+import ranger from "../lib/assets/ranger.png"
+import routeMaster from "../lib/assets/routeMaster.png"
+import warrior from "../lib/assets/warrior.png"
 
 const bosses = [
     {
@@ -76,7 +77,7 @@ const bosses = [
             "Frantz is not amused.",
         ],
 
-        image: '',
+        image: frantz,
 
         hp: 500,
         atk: 50,
@@ -110,7 +111,7 @@ const bosses = [
             "Good effort overall! But it won't be enough."
         ],
 
-        image: '',
+        image: brett,
 
         hp: 500,
         atk: 50,
@@ -146,7 +147,7 @@ const bosses = [
             "Louis glares menacingly."
         ],
 
-        image: '',
+        image: lewis,
 
         hp: 500,
         atk: 50,
@@ -307,7 +308,7 @@ const characters = [
             "Louis' Sunglasses"
         ],
 
-        image: '',
+        image: warrior,
 
         hp: 1000,
         atk: 250,
