@@ -279,7 +279,6 @@ const characters = [
             "Bug Squisher",
             "Ronnel's Memoir",
             "Ring of Regex",
-            "Node Docs",
             "La Croix",
             "Shiva's Fang",
             "Bahamut's Box",
@@ -312,7 +311,7 @@ const characters = [
 
         hp: 1000,
         atk: 250,
-        def: 250
+        def: 30
 
     }
 ]
