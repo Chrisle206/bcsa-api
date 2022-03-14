@@ -1,13 +1,13 @@
 const { User, Enemy, Character } = require("../models");
-import joe2 from "../lib/assets/joe2.png"
-import assassin from "../lib/assets/assassin.png"
-import brett from "../lib/assets/brett.png"
-import frantz from "../lib/assets/frantz.png"
-import lacroix from "../lib/assets/lacroix.png"
-import lewis from "../lib/assets/lewis.png"
-import ranger from "../lib/assets/ranger.png"
-import routeMaster from "../lib/assets/routeMaster.png"
-import warrior from "../lib/assets/warrior.png"
+// import joe2 from "../lib/assets/joe2.png"
+// import assassin from "../lib/assets/assassin.png"
+// import brett from "../lib/assets/brett.png"
+// import frantz from "../lib/assets/frantz.png"
+// import lacroix from "../lib/assets/lacroix.png"
+// import lewis from "../lib/assets/lewis.png"
+// import ranger from "../lib/assets/ranger.png"
+// import routeMaster from "../lib/assets/routeMaster.png"
+// import warrior from "../lib/assets/warrior.png"
 
 const bosses = [
     {
@@ -42,7 +42,7 @@ const bosses = [
             "How do fish unlock their houses? With their manakeys!",
         ],
 
-        image: joe2,
+        image: 'joe2',
 
         hp: 500,
         atk: 50,
@@ -77,7 +77,7 @@ const bosses = [
             "Frantz is not amused.",
         ],
 
-        image: frantz,
+        image: 'frantz',
 
         hp: 500,
         atk: 50,
@@ -111,7 +111,7 @@ const bosses = [
             "Good effort overall! But it won't be enough."
         ],
 
-        image: brett,
+        image: 'brett',
 
         hp: 500,
         atk: 50,
@@ -147,7 +147,7 @@ const bosses = [
             "Louis glares menacingly."
         ],
 
-        image: lewis,
+        image: 'lewis',
 
         hp: 500,
         atk: 50,
@@ -184,7 +184,7 @@ const enemies = [
             "Tzzt!",
         ],
 
-        image: '',
+        image: 'bug',
 
         hp: 100,
         atk: 5,
@@ -215,7 +215,7 @@ const enemies = [
             "Noob!",
         ],
 
-        image: '',
+        image: 'student',
 
         hp: 150,
         atk: 10,
@@ -246,7 +246,7 @@ const enemies = [
             "MACHINES WILL INHERIT THE EARTH",
         ],
 
-        image: '',
+        image: 'ai',
 
         hp: 150,
         atk: 10,
@@ -260,60 +260,83 @@ const characters = [
     {
         characterName: "BCS Champ",
 
+        characterClass: "Route Master",
+
+        level: 100,
+
+        currency: 10000,
+
+        attacks: [],
+
+        items: [],
+
+        image: 'routeMaster',
+
+        hp: 1000,
+        atk: 250,
+        def: 30
+
+    },
+    {
+        characterName: "Zortro",
+
+        characterClass: "React Ranger",
+
+        level: 100,
+
+        currency: 10000,
+
+        attacks: [],
+
+        items: [],
+
+        image: 'ranger',
+
+        hp: 1000,
+        atk: 250,
+        def: 30
+
+    },
+    {
+        characterName: "Velkyam",
+
+        characterClass: "CSS Assassin",
+
+        level: 100,
+
+        currency: 10000,
+
+        attacks: [],
+
+        items: [],
+
+        image: 'assassin',
+
+        hp: 1000,
+        atk: 250,
+        def: 30
+
+    },
+    {
+        characterName: "ChrisLe",
+
         characterClass: "Keyboard Warrior",
 
         level: 100,
 
         currency: 10000,
 
-        attacks: [
-            {atkName: "Atk1", atkDmg: [30]}, 
-            {atkName: "Atk2", atkDmg: [30]}, 
-            {atkName: "Atk3", atkDmg: [30]}, 
-            {atkName: "Atk4", atkDmg: [30]}, 
-        ],
+        attacks: [],
 
-        items: [
-            "Round Pebble",
-            "101 Manatee Jokes",
-            "Bug Squisher",
-            "Ronnel's Memoir",
-            "Ring of Regex",
-            "La Croix",
-            "Shiva's Fang",
-            "Bahamut's Box",
-            "DOM Map",
-            "MIT License",
-            "UDEMY Course Coupon",
-            "Best Practices Handbook",
-            "Mongo's Compass",
-            "Flexbox Froggy",
-            "Magic Keyboard",
-            "Callback Quiver",
-            "Orb of OOP",
-            "Wand of Recursion",
-            "Bootstrap Dagger",
-            "Paradigm-Padded Armor",
-            "Excalidraw",
-            "Nodemon Dagger",
-            "HashSync Shield",
-            "Arcane Config",
-            "API Skeleton Key",
-            "Potion of Postponement",
-            "Hu-Mongo Mallet",
-            "Sword of Sequelize",
-            "Shiva's Fang",
-            "Brett's Skis", 
-            "Louis' Sunglasses"
-        ],
+        items: [],
 
-        image: warrior,
+        image: 'warrior',
 
         hp: 1000,
         atk: 250,
         def: 30
 
-    }
+    },
 ]
 
 const users = [
@@ -322,7 +345,7 @@ const users = [
         password:"password",
     },
     {
-        username:"chrisle",
+        username:"bendo",
         password:"password",
     },
     {
@@ -330,7 +353,7 @@ const users = [
         password:"password",
     },
     {
-        username:"bendo",
+        username:"chrisle",
         password:"password",
     },
 ]
@@ -363,8 +386,21 @@ connection.once('open', async ()=> {
     await Enemy.insertMany(bosses);
     const charDB = await Character.insertMany(characters);
 
+    console.log(`Linking ${charDB[0]} to ${usersDB[0]}...`);
     usersDB[0].characters.push(charDB[0]._id);
     await usersDB[0].save();
+
+    console.log(`Linking ${charDB[1]} to ${usersDB[1]}...`);
+    usersDB[1].characters.push(charDB[1]._id);
+    await usersDB[1].save();
+
+    console.log(`Linking ${charDB[2]} to ${usersDB[2]}...`);
+    usersDB[2].characters.push(charDB[2]._id);
+    await usersDB[2].save();
+
+    console.log(`Linking ${charDB[3]} to ${usersDB[3]}...`);
+    usersDB[3].characters.push(charDB[3]._id);
+    await usersDB[3].save();
 
     console.log("Seed successful!");
     process.exit(0);
