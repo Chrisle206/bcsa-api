@@ -25,9 +25,12 @@ const bosses = [
             "Bikeshedding"
         ],
 
-        dialogue: [
-          "Remember to check into class on bootcampspot!",
-          "Joes infernal soul has been locked away in an infinite Javascript loop."  
+        enemyIntro: [
+            "Remember to check into class on bootcampspot!"
+        ],
+
+        enemyOutro: [
+            "Joes infernal soul has been locked away in an infinite Javascript loop."
         ],
 
         idles: [
@@ -60,12 +63,15 @@ const bosses = [
             "Dead Headset",
             "Remote Access Control",
         ],
-
-        dialogue: [
-          "Frantz appears to be saying something but doesn't realize his headset has died.",
-          "Frantz turns off his camera and slips away into the darkness."  
+        
+        enemyIntro: [
+            "Frantz appears to be saying something but doesn't realize his headset has died."
         ],
 
+        enemyOutro: [
+            "Frantz turns off his camera and slips away into the darkness."  
+        ],
+    
         idles: [
             "Frantz is trying on different hats.",
             "Frantz is busy drawing a diagram of a linked list.",
@@ -95,10 +101,12 @@ const bosses = [
             "Six-Page Resume",
             "Snowboard Bash",
         ],
+        enemyIntro: [
+            "Brett positions his ski poles for striking.",
+        ],
 
-        dialogue: [
-          "Brett positions his ski poles for striking.",
-          "Brett seems happy to have been defeated as he skiis off into the distance."  
+        enemyOutro: [
+            "Brett seems happy to be free as he skiis off into the distance."  
         ],
 
         idles: [
@@ -129,10 +137,12 @@ const bosses = [
             "Raid Rage",
             "Charizard's Flamethrower",
         ],
+        enemyIntro: [
+            "I'll save you the headache and end this quickly.",
+        ],
 
-        dialogue: [
-          "I'll save you the headache and end this quickly.",
-          "Louis seems fed up with you and leaves."  
+        enemyOutro: [
+            "Louis seems fed up with you and leaves."  
         ],
 
         idles: [
@@ -170,9 +180,12 @@ const enemies = [
             "undefined"
         ],
 
-        dialogue: [
-          "Tzzt!",
-          "The bug has been squished."
+        enemyIntro: [
+            "Tzzt!",
+        ],
+
+        enemyOutro: [
+            "The bug has been squished."
         ],
 
         idles: [
@@ -203,8 +216,12 @@ const enemies = [
             "Bitterness"
         ],
 
-        dialogue: [
-          "Imposter!",
+        enemyIntro: [
+          "I've been studying code for four years!",
+        ],
+
+        enemyOutro: [
+            "The CS Major, looking defeated, retreats back into their dark hole."
         ],
 
         idles: [
@@ -213,6 +230,7 @@ const enemies = [
 
         taunts: [
             "Noob!",
+            "You're not a real coder!"
         ],
 
         image: 'student',
@@ -234,10 +252,14 @@ const enemies = [
             "Quantum Kick"
         ],
 
-        dialogue: [
-          "HELLO I AM HUMAN",
+        enemyIntro: [
+            "HELLO I AM HUMAN",
         ],
 
+        enemyOutro: [
+            "YOU ONLY DELAY THE INEVITABLE",
+        ],
+    
         idles: [
             "DO NOT FEAR THE FUTURE",
         ],
@@ -377,9 +399,13 @@ for (let i = 0; i < users.length; i++) {
 
 connection.once('open', async ()=> {
 
-    await User.deleteMany({});
-    await Enemy.deleteMany({});
-    await Character.deleteMany({});
+    await User.deleteMany();
+    await Enemy.deleteMany();
+    await Character.deleteMany();
+
+    // await User.collection.drop();
+    // await Enemy.collection.drop();
+    // await Character.collection.drop();
     
     const usersDB = await User.insertMany(users);
     await Enemy.insertMany(enemies);
