@@ -276,6 +276,41 @@ const enemies = [
 
     }, 
 
+    {
+        enemyName:"Giant Slug",
+
+        level: 20,
+
+        attacks: [
+            "Megabite",
+            "Overload",
+            "RAM Blast"
+        ],
+
+        enemyIntro: [
+            "Grrglgrlrgrlrrr...",
+        ],
+
+        enemyOutro: [
+            "Gggguuuu...",
+        ],
+    
+        idles: [
+            "The slug wriggles before you.",
+        ],
+
+        taunts: [
+            "The slug towers over you.",
+        ],
+
+        image: 'slug',
+
+        hp: 300,
+        atk: 40,
+        def: 35
+
+    }, 
+
 ]
 
 const characters = [
@@ -408,7 +443,7 @@ connection.once('open', async ()=> {
     // await Character.collection.drop();
     
     const usersDB = await User.insertMany(users);
-    await Enemy.insertMany(enemies);
+    // await Enemy.insertMany(enemies);
     await Enemy.insertMany(bosses);
     const charDB = await Character.insertMany(characters);
 
