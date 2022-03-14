@@ -23,7 +23,9 @@ const enemySchema = new Schema(
 
     attacks: [],
 
-    dialogue: [],
+    enemyIntro: [],
+
+    enemyOutro: [],
 
     idles: [],
 
