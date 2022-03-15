@@ -165,6 +165,38 @@ const bosses = [
 
     }, 
 
+    {
+        enemyName:"Joe Reborn",
+
+        level: 100,
+
+        attacks: [
+            "Final Grade",
+        ],
+        enemyIntro: [
+            "My body may be forfeit, but my CODE is ETERNAL!",
+        ],
+
+        enemyOutro: [
+            "ALWAYS BE CODING!"  
+        ],
+
+        idles: [
+            "Joe's unbounded spirit glows with wrath.",
+        ],
+
+        taunts: [
+            "ALWAYS BE CODING!",
+        ],
+
+        image: 'joefinal',
+
+        hp: 2000,
+        atk: 5000,
+        def: 90
+
+    }, 
+
 ]
 
 //These enemies are placeholders for demo purposes. They can be reutilized in adventure mode if we have time to develop it.
