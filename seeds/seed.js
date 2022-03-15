@@ -13,7 +13,7 @@ const bosses = [
     {
         enemyName:"Joe Rehfuss",
 
-        level: 1000,
+        level: 100,
         
         attacks: [
             "Room Mute",
@@ -47,8 +47,8 @@ const bosses = [
 
         image: 'joe2',
 
-        hp: 500,
-        atk: 50,
+        hp: 1000,
+        atk: 200,
         def: 50
 
     }, 
@@ -86,7 +86,7 @@ const bosses = [
         image: 'frantz',
 
         hp: 500,
-        atk: 50,
+        atk: 100,
         def: 50
 
     }, 
@@ -122,7 +122,7 @@ const bosses = [
         image: 'brett',
 
         hp: 500,
-        atk: 50,
+        atk: 100,
         def: 50
 
     }, 
@@ -160,7 +160,7 @@ const bosses = [
         image: 'lewis',
 
         hp: 500,
-        atk: 50,
+        atk: 100,
         def: 50
 
     }, 
