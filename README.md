@@ -2,11 +2,9 @@
 
 ## Description
 
-This is the API for the final project of our coding bootcamp, built using MongoDB and Mongoose and deployed on Heroku. It hosts all user, character, and enemy data, and provides that data as it's requested from the front end, which is hosted in a separate repository linked below. I developed the API alone while the rest of my team devoted their efforts to building the front end, understanding that the front was where most of the time was going to have to go. I faced several challenges constructing this API because it was my first time using MongoDB and Mongoose, having previously only worked with Sequelize. Mongo was easier to set up and more intuitive, but learning any new tech comes with its hardships. In the end, I was able to finish with plenty of time to help develop the front end more. The experience I've gained from working on the back-end for two class projects in a row has been invaluable to me, as I find I quite enjoy it. It has also brought to my awareness, however, that I must touch-up on my skills with the front-end. All-in-all, the API does what it's supposed to, and it was a joy to develop.
+This is the API for the final project of our coding bootcamp, built using MongoDB and Mongoose and deployed on Heroku. It hosts all user, character and enemy data, and provides that data as it's requested from the front end, which is hosted in a separate repository linked below. I developed the API alone while the rest of my team devoted their efforts to building the front end, understanding that the front was where most of the time was going to have to go. I faced several challenges constructing this API because it was my first time using MongoDB and Mongoose, having previously only worked with Sequelize. Mongo was easier to set up and more intuitive, but learning any new tech comes with its hardships. In the end, I was able to finish with plenty of time to help develop the front end more. The experience I've gained from working on the back-end for two class projects in a row has been invaluable to me, as I find I quite enjoy it. It has also brought to my awareness, however, that I must touch-up on my skills with the front-end. All-in-all, the API does what it's supposed to, and it was a joy to develop.
 
 ## Table of Contents
-
-If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -18,46 +16,31 @@ If your README is long, add a table of contents to make it easy for users to fin
 There is no installation required to access this API. It is live and deployed at this URL: 
 [https://bcsa-api.herokuapp.com/](https://bcsa-api.herokuapp.com/)
 
+Alternatively, play the actual game by visiting this URL:
+
+[https://bcs-adventures.herokuapp.com/](https://bcs-adventures.herokuapp.com/)
+
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+There are a handful of routes that the API and front-end operate on. There are POST routes for signing up, logging in, and creating characters, GET requests for retrieving character and enemy data, and PUT requests for updating the character's stats and wealth upon defeating an enemy. Please refer to the 'routes' folder in the repository to access these routes directly and see how to use them. 
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
+The API for BCS Adventures was developed by one member of the team. You can access their GitHub below:
 
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
+Shawn (Project Manager, Backend, API): [https://github.com/shnala](https://github.com/shnala)
 
-If you followed tutorials, include links to those here as well.
+The front-end of the app was all-hands-on-deck. The rest of the team's GitHub profiles are linked below:
 
-## License
+Chris (Git Admin, React, Battle, JS): [https://github.com/Chrisle206](https://github.com/Chrisle206)
 
-The last section of a high-quality README file is the license. This lets other developers know what they can and cannot do with your project. If you need help choosing a license, refer to [https://choosealicense.com/](https://choosealicense.com/).
+Ben (React, JS, Sprites, Music): [https://github.com/zortro](https://github.com/zortro)
 
----
+Dat (UI, CSS, Art): [https://github.com/velkyam](https://github.com/velkyam)
 
-🏆 The previous sections are the bare minimum, and your project will ultimately determine the content of this document. You might also want to consider adding the following sections.
-
-## Badges
-
-![badmath](https://img.shields.io/github/languages/top/lernantino/badmath)
-
-Badges aren't necessary, per se, but they demonstrate street cred. Badges let other developers know that you know what you're doing. Check out the badges hosted by [shields.io](https://shields.io/). You may not understand what they all represent now, but you will in time.
-
-## Features
-
-If your project has a lot of features, list them here.
 
 ## How to Contribute
 
-If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.
+Play our game! Go to [https://bcs-adventures.herokuapp.com/](https://bcs-adventures.herokuapp.com/)
 
-## Tests
-
-Go the extra mile and write tests for your application. Then provide examples on how to run them here.
+Wanna join the team? Contact us at [shawnanalla@gmail.com](shawnanalla@gmail.com)

@@ -359,7 +359,7 @@ const characters = [
 
         items: [],
 
-        image: 'routeMaster',
+        image: 'master',
 
         hp: 1000,
         atk: 250,
